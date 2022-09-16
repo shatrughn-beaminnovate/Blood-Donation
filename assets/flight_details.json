@@ -1,0 +1,27 @@
+{
+    "data": [
+        {
+            "day_id": 1,
+            "day": "Mon",
+            "date": 1,
+            "status": true,
+            "flight_details": [
+                {
+                    "FlightLandDetails": {
+                        "flight_id": 1,
+                        "flight_name": "AF570",
+                        "STA": 1350,
+                        "ATA": 1350
+                    },
+                    "FlightUpDetails": {
+                        "flight_id": 1,
+                        "flight_name": "AF571",
+                        "STA": 1351,
+                        "ATA": 1351
+                    }
+                }
+              
+            ]
+        }
+    ]
+}

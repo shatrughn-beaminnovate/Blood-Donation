@@ -1,0 +1,84 @@
+{
+    "dayList": [
+        {
+            "dayId": 1,
+            "day": "Fri",
+            "date": 1,
+            "status": true,
+            "flightDetails": [
+                {
+                    "flightLandDetails": {
+                        "flightId": 1,
+                        "flightName": "AF570",
+                        "sta": 1350,
+                        "ata": 1350
+                    },
+                    "flightUpDetails": {
+                        "flightId": 1,
+                        "flightName": "AF571",
+                        "std": 1351,
+                        "atd": 1351
+                    }
+                }
+            ]
+        },
+        {
+            "dayId": 2,
+            "day": "Sat",
+            "date": 2,
+            "status": false,
+            "flightDetails": [
+                {
+                    "flightLandDetails": {
+                        "flightId": 4,
+                        "flightName": "AF574",
+                        "sta": 1352,
+                        "ata": 1352
+                    },
+                    "flightUpDetails": {
+                        "flightId": 4,
+                        "flightName": "AF575",
+                        "std": 1353,
+                        "atd": 1353
+                    }
+                },
+                {
+                    "flightLandDetails": {
+                        "flightId": 4,
+                        "flightName": "AF671",
+                        "sta": 1452,
+                        "ata": 1452
+                    },
+                    "flightUpDetails": {
+                        "flightId": 4,
+                        "flightName": "AF672",
+                        "std": 1453,
+                        "atd": 1453
+                    }
+                }
+            ]
+        },
+        {
+            "dayId": 3,
+            "day": "Sun",
+            "date": 3,
+            "status": false,
+            "flightDetails": [
+                {
+                    "flightLandDetails": {
+                        "flightId": 6,
+                        "flightName": "AF576",
+                        "sta": 1354,
+                        "ata": 1354
+                    },
+                    "flightUpDetails": {
+                        "flightId": 6,
+                        "flightName": "AF577",
+                        "std": 1355,
+                        "atd": 1355
+                    }
+                }
+            ]
+        }
+    ]
+}
