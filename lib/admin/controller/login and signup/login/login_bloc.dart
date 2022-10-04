@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:blood_donation/admin/controller/login%20and%20signup/authentication/authentication_bloc.dart';
+import 'package:blood_donation/admin/data/model/login/login_data.dart';
 import 'package:blood_donation/admin/data/repositories/login_repository.dart';
 import 'package:equatable/equatable.dart';
 

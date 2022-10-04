@@ -21,6 +21,7 @@ class _BloodBankScreenState extends State<BloodBankScreen> {
           title: Text('Blood Bank'),
           pinned: true,
           elevation: 4,
+          expandedHeight: 60,
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate((

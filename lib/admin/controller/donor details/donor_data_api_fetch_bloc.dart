@@ -41,11 +41,11 @@ class DonorDataApiFetchBloc
         if (donorDetails["error"] == false) {
           emit(DonorDeletedSuccess(donorDetails));
         } else {
-          emit(DonorDataApiFetchFailure(donorDetails["message"]));
+          emit(DonorDeletingFailure(donorDetails["message"]));
         }
       } catch (e) {
         print(e);
-        emit(DonorDataApiFetchFailure(e.toString()));
+        emit(DonorDeletingFailure(e.toString()));
       }
     });
   }

@@ -30,3 +30,8 @@ class DonorDataApiFetchFailure extends DonorDataApiFetchState {
   final String message;
   const DonorDataApiFetchFailure(this.message);
 }
+
+class DonorDeletingFailure extends DonorDataApiFetchState {
+  final String message;
+  const DonorDeletingFailure(this.message);
+}

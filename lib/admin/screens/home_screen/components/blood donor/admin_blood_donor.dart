@@ -4,9 +4,10 @@
 
 import 'package:blood_donation/admin/controller/donor%20details/donor_data_api_fetch_bloc.dart';
 import 'package:blood_donation/admin/data/model/donor_info/donor_details.dart';
-import 'package:blood_donation/admin/screens/home_screen/components/blood%20donor/components/add_new_donor_form.dart';
+import 'package:blood_donation/constant/admin/admin_route.dart';
 import 'package:blood_donation/constant/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -176,45 +177,6 @@ class _AdminBloodDonorState extends State<AdminBloodDonor>
     return donor;
   }
 
-  //pushing to next screen and callback navigation
-  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
-    // final result = await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) =>
-    //           const SelectionScreen()),
-    // );
-    final result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const AddNewDonorForm(
-          title: "Add New Donor", purpose: "add", id: 0);
-    }));
-
-    if (!mounted) return;
-    print(result);
-    if (result != null) {
-      donorDataApiFetchBloc.add(const LoadDonorData());
-      ScaffoldMessenger.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(
-          content: Text(
-            result,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 16, color: Colors.white),
-          ),
-          backgroundColor: Colors.green,
-          dismissDirection: DismissDirection.up,
-          duration: const Duration(seconds: 2),
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.only(
-              top: 20,
-              bottom: MediaQuery.of(context).size.height - 110,
-              right: SizeConfig.blockSizeHorizontal! * 30,
-              left: SizeConfig.blockSizeHorizontal! * 30),
-        ));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     //final localizations = GalleryLocalizations.of(context)!;
@@ -246,6 +208,26 @@ class _AdminBloodDonorState extends State<AdminBloodDonor>
                   style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 backgroundColor: Colors.green,
+                dismissDirection: DismissDirection.up,
+                duration: const Duration(seconds: 2),
+                behavior: SnackBarBehavior.floating,
+                margin: EdgeInsets.only(
+                    top: 20,
+                    bottom: MediaQuery.of(context).size.height - 110,
+                    right: SizeConfig.blockSizeHorizontal! * 30,
+                    left: SizeConfig.blockSizeHorizontal! * 30),
+              ));
+          }
+          if (state is DonorDeletingFailure) {
+            ScaffoldMessenger.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                content: Text(
+                  state.message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                backgroundColor: Theme.of(context).colorScheme.inverseSurface,
                 dismissDirection: DismissDirection.up,
                 duration: const Duration(seconds: 2),
                 behavior: SnackBarBehavior.floating,
@@ -339,7 +321,10 @@ class _AdminBloodDonorState extends State<AdminBloodDonor>
                       height: 30,
                       child: ElevatedButton(
                           onPressed: () {
-                            _navigateAndDisplaySelection(context);
+                            String title = "Add New Donor";
+                            int id = 0;
+                            String purpose = "add";
+                            context.push("/donorInfo/$title/$id/$purpose");
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue),
@@ -355,14 +340,12 @@ class _AdminBloodDonorState extends State<AdminBloodDonor>
                   ),
                   rowsPerPage: _rowsPerPage.value,
                   onRowsPerPageChanged: (value) {
-                    print("onRowsPerPageChanged $value");
                     setState(() {
                       _rowsPerPage.value = value!;
                     });
                   },
                   initialFirstRowIndex: _rowIndex.value,
                   onPageChanged: (rowIndex) {
-                    print("onPageChanged ");
                     setState(() {
                       _rowIndex.value = rowIndex;
                     });
@@ -420,6 +403,44 @@ class _AdminBloodDonorState extends State<AdminBloodDonor>
         ),
       ),
     );
+  }
+
+  //pushing to next screen and callback navigation
+  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
+    final result = await Navigator.pushNamed(context, AdminRouteName.donorInfo,
+        arguments: {
+          "title": "Add New Donor",
+          "id": 0,
+          "purpose": "add",
+        });
+
+    //     await Navigator.push(context, MaterialPageRoute(builder: (context) {
+    //   return const AddNewDonorForm(
+    //       title: "Add New Donor", purpose: "add", id: 0);
+    // }));
+
+    if (!mounted) return;
+    if (result != null) {
+      donorDataApiFetchBloc.add(const LoadDonorData());
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+          content: Text(
+            result.toString(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          backgroundColor: Colors.green,
+          dismissDirection: DismissDirection.up,
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(
+              top: 20,
+              bottom: MediaQuery.of(context).size.height - 110,
+              right: SizeConfig.blockSizeHorizontal! * 30,
+              left: SizeConfig.blockSizeHorizontal! * 30),
+        ));
+    }
   }
 }
 
@@ -503,10 +524,20 @@ class _DonorDataSource extends DataTableSource {
           children: [
             TextButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return AddNewDonorForm(
-                      title: "Donor Info", purpose: "edit", id: dessert.id);
-                }));
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return AddNewDonorForm(
+                //       title: "Donor Info", purpose: "edit", id: dessert.id);
+                // }));
+                Map data = {
+                  "title": "Donor Info",
+                  "id": dessert.id,
+                  "purpose": "edit",
+                };
+
+                String title = "Donor Info";
+                int id = dessert.id;
+                String purpose = "edit";
+                context.push("/donorInfo/$title/$id/$purpose");
               },
               child: Text(
                 "Edit",
@@ -522,18 +553,28 @@ class _DonorDataSource extends DataTableSource {
                 showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
-                    title: const Text('Confirm Delete'),
-                    content: const Text(
-                        'Are you sure you want to delete this donor?'),
+                    title: Text('Confirm Delete',
+                        style: Theme.of(context).textTheme.subtitle1),
+                    content: Text('Are you sure you want to delete this donor?',
+                        style: Theme.of(context).textTheme.headline3),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => Navigator.pop(context, 'Cancel'),
-                        child: const Text('Cancel'),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(fontSize: 14),
+                        ),
                       ),
                       TextButton(
-                        onPressed: () => donorDataApiFetchBloc
-                            .add(DeleteDonorData(dessert.id)),
-                        child: const Text('OK'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          donorDataApiFetchBloc
+                              .add(DeleteDonorData(dessert.id));
+                        },
+                        child: const Text(
+                          'OK',
+                          style: TextStyle(fontSize: 14),
+                        ),
                       ),
                     ],
                   ),
@@ -562,6 +603,43 @@ class _DonorDataSource extends DataTableSource {
 
   @override
   int get selectedRowCount => _selectedCount;
+
+  //pushing to next screen and callback navigation
+  Future<void> _navigateAndDisplaySelection(
+      BuildContext context, int id) async {
+    final result = await Navigator.pushNamed(context, AdminRouteName.donorInfo,
+        arguments: {
+          "title": "Donor Info",
+          "id": id,
+          "purpose": "edit",
+        });
+    //     await Navigator.push(context, MaterialPageRoute(builder: (context) {
+    //   return const AddNewDonorForm(
+    //       title: "Add New Donor", purpose: "add", id: 0);
+    // }));
+
+    if (result != null) {
+      donorDataApiFetchBloc.add(const LoadDonorData());
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+          content: Text(
+            result.toString(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          backgroundColor: Colors.green,
+          dismissDirection: DismissDirection.up,
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(
+              top: 20,
+              bottom: MediaQuery.of(context).size.height - 110,
+              right: SizeConfig.blockSizeHorizontal! * 30,
+              left: SizeConfig.blockSizeHorizontal! * 30),
+        ));
+    }
+  }
 
   // void _selectAll(bool? checked) {
   //   for (final dessert in _donorData) {

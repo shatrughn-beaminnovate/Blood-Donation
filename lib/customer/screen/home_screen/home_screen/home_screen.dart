@@ -3,8 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constant/size_config.dart';
-import '../../blood_donate/blood_donation_request.dart';
-import '../../blood_request/blood_request_form.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -28,94 +26,94 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))
           ],
-          expandedHeight: 180,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Center(
-              child: Container(
-                  height: 130,
-                  margin: const EdgeInsets.only(top: 70.0),
-                  padding: const EdgeInsets.fromLTRB(0, 30, 0, 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Spacer(),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const BloodRequest();
-                          }));
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(10.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(8.0), // <-- Radius
-                          ),
-                          primary: const Color(0xFFF4F4F4),
-                        ),
-                        child: Column(
-                          children: const [
-                            Spacer(),
-                            Image(
-                              image: AssetImage(
-                                  "assets/images/icons/bloodRequest.png"),
-                              height: 35,
-                              width: 40.0,
-                            ),
-                            Spacer(),
-                            Text(
-                              "Request Blood",
-                              style: TextStyle(
-                                  fontSize: 15.0,
-                                  color: Colors.black54,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            Spacer(),
-                          ],
-                        ),
-                      ),
-                      const Spacer(),
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const BloodDonationForm();
-                            }));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(10.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(8.0), // <-- Radius
-                            ),
-                            primary: const Color(0xFFF4F4F4),
-                          ),
-                          child: Column(
-                            children: const [
-                              Spacer(),
-                              Image(
-                                image: AssetImage(
-                                    "assets/images/icons/bloodDonor.png"),
-                                height: 35,
-                                width: 40.0,
-                              ),
-                              Spacer(),
-                              Text(
-                                "Donate Blood",
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.black54,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Spacer(),
-                            ],
-                          )),
-                      const Spacer(),
-                    ],
-                  )),
-            ),
-          ),
+          expandedHeight: 60,
+          // flexibleSpace: FlexibleSpaceBar(
+          //   background: Center(
+          //     child: Container(
+          //         height: 130,
+          //         margin: const EdgeInsets.only(top: 70.0),
+          //         padding: const EdgeInsets.fromLTRB(0, 30, 0, 10),
+          //         child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             const Spacer(),
+          //             ElevatedButton(
+          //               onPressed: () {
+          //                 Navigator.push(context,
+          //                     MaterialPageRoute(builder: (context) {
+          //                   return const BloodRequest();
+          //                 }));
+          //               },
+          //               style: ElevatedButton.styleFrom(
+          //                 padding: const EdgeInsets.all(10.0),
+          //                 shape: RoundedRectangleBorder(
+          //                   borderRadius:
+          //                       BorderRadius.circular(8.0), // <-- Radius
+          //                 ),
+          //                 primary: const Color(0xFFF4F4F4),
+          //               ),
+          //               child: Column(
+          //                 children: const [
+          //                   Spacer(),
+          //                   Image(
+          //                     image: AssetImage(
+          //                         "assets/images/icons/bloodRequest.png"),
+          //                     height: 35,
+          //                     width: 40.0,
+          //                   ),
+          //                   Spacer(),
+          //                   Text(
+          //                     "Request Blood",
+          //                     style: TextStyle(
+          //                         fontSize: 15.0,
+          //                         color: Colors.black54,
+          //                         fontWeight: FontWeight.w500),
+          //                   ),
+          //                   Spacer(),
+          //                 ],
+          //               ),
+          //             ),
+          //             const Spacer(),
+          //             ElevatedButton(
+          //                 onPressed: () {
+          //                   Navigator.push(context,
+          //                       MaterialPageRoute(builder: (context) {
+          //                     return const BloodDonationForm();
+          //                   }));
+          //                 },
+          //                 style: ElevatedButton.styleFrom(
+          //                   padding: const EdgeInsets.all(10.0),
+          //                   shape: RoundedRectangleBorder(
+          //                     borderRadius:
+          //                         BorderRadius.circular(8.0), // <-- Radius
+          //                   ),
+          //                   primary: const Color(0xFFF4F4F4),
+          //                 ),
+          //                 child: Column(
+          //                   children: const [
+          //                     Spacer(),
+          //                     Image(
+          //                       image: AssetImage(
+          //                           "assets/images/icons/bloodDonor.png"),
+          //                       height: 35,
+          //                       width: 40.0,
+          //                     ),
+          //                     Spacer(),
+          //                     Text(
+          //                       "Donate Blood",
+          //                       style: TextStyle(
+          //                           fontSize: 15.0,
+          //                           color: Colors.black54,
+          //                           fontWeight: FontWeight.w500),
+          //                     ),
+          //                     Spacer(),
+          //                   ],
+          //                 )),
+          //             const Spacer(),
+          //           ],
+          //         )),
+          //   ),
+          // ),
         ),
         SliverList(
           delegate: SliverChildListDelegate([
@@ -332,9 +330,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 100,
-            )
+            // const SizedBox(
+            //   height: 100,
+            // )
           ]),
         ),
       ],

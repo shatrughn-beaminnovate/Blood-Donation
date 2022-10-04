@@ -1,11 +1,14 @@
+import 'package:blood_donation/admin/controller/login%20and%20signup/authentication/authentication_bloc.dart';
 import 'package:blood_donation/admin/screens/home_screen/components/admin/admin_list.dart';
 import 'package:blood_donation/admin/screens/home_screen/components/blood%20donor/admin_blood_donor.dart';
 import 'package:blood_donation/constant/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class AdminHomeScreen extends StatefulWidget {
-  const AdminHomeScreen({Key? key}) : super(key: key);
+  const AdminHomeScreen({Key? key, required this.pageIndex}) : super(key: key);
+  final int pageIndex;
 
   @override
   State<AdminHomeScreen> createState() => _AdminHomeScreenState();
@@ -13,6 +16,14 @@ class AdminHomeScreen extends StatefulWidget {
 
 class _AdminHomeScreenState extends State<AdminHomeScreen> {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    _selectedIndex = widget.pageIndex;
+    super.initState();
+  }
+
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<Widget> widgetScreen = [
     Container(),
@@ -31,6 +42,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        key: scaffoldKey,
         automaticallyImplyLeading:
             deviceType == DeviceScreenType.mobile ? true : false,
         // leading: deviceType == DeviceScreenType.mobile
@@ -47,7 +59,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
             ? null
             : [
                 TextButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<AuthenticationBloc>().add(const LoggedOut());
+                    },
                     icon: const Icon(
                       Icons.logout,
                       color: Colors.white,

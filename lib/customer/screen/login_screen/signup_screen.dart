@@ -1,4 +1,5 @@
 import 'package:blood_donation/constant/size_config.dart';
+import 'package:blood_donation/customer/screen/home_screen/home_screen/donor_info_form.dart';
 import 'package:blood_donation/customer/screen/login_screen/components/header_text.dart';
 import 'package:blood_donation/customer/screen/login_screen/components/login_screen_text_form_field.dart';
 import 'package:blood_donation/customer/screen/login_screen/components/text_button_with_icon.dart';
@@ -74,7 +75,12 @@ class _SignUpState extends State<SignUp> {
                   width: double.infinity,
                   child: TextButtonWithIcon(
                     label: "Register",
-                    onPress: () {},
+                    onPress: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const DonorInfoForm();
+                      }));
+                    },
                   )),
               const SizedBox(
                 height: 10,

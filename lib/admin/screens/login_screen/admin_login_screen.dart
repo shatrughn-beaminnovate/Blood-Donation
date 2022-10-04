@@ -1,10 +1,13 @@
 import 'package:blood_donation/admin/controller/login%20and%20signup/authentication/authentication_bloc.dart';
 import 'package:blood_donation/admin/controller/login%20and%20signup/login/login_bloc.dart';
 import 'package:blood_donation/admin/screens/home_screen/admin_home_screen.dart';
+import 'package:blood_donation/admin/screens/login_screen/components/login_form_validation_mixin.dart';
+import 'package:blood_donation/admin_main.dart';
 import 'package:blood_donation/constant/size_config.dart';
 import 'package:blood_donation/customer/screen/login_screen/components/header_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class AdminLoginScreen extends StatefulWidget {
@@ -16,7 +19,8 @@ class AdminLoginScreen extends StatefulWidget {
   _AdminLoginScreenState createState() => _AdminLoginScreenState();
 }
 
-class _AdminLoginScreenState extends State<AdminLoginScreen> {
+class _AdminLoginScreenState extends State<AdminLoginScreen>
+    with LoginFormValidationMixin {
   bool isChecked = false;
 
   //creating controller for textfield
@@ -28,6 +32,8 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   late AuthenticationBloc authenticationBloc;
 
   bool isProgress = false;
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -47,7 +53,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
       body: BlocProvider(
         create: (context) => loginBloc,
         child: BlocListener<LoginBloc, LoginState>(
-          listener: (context, state) {
+          listener: (context1, state) {
             if (state is LoginLoading) {
               setState(() {
                 isProgress = true;
@@ -57,39 +63,63 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
               setState(() {
                 isProgress = false;
               });
+              // context.push("/home/${0}");
+              // Navigator.push(context, MaterialPageRoute(builder: (context) {
+              //   return MyApp();
+              // }));
               print("Login Initial called");
             }
             if (state is LoginFailure) {
-              print("Login Failure called ${state.message}");
               setState(() {
                 isProgress = false;
               });
+              ScaffoldMessenger.of(context)
+                ..removeCurrentSnackBar()
+                ..showSnackBar(SnackBar(
+                  content: Text(
+                    state.message,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                  backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+                  dismissDirection: DismissDirection.up,
+                  duration: const Duration(seconds: 2),
+                  behavior: SnackBarBehavior.floating,
+                  margin: EdgeInsets.only(
+                      top: 20,
+                      bottom: MediaQuery.of(context).size.height - 110,
+                      right: SizeConfig.blockSizeHorizontal! * 30,
+                      left: SizeConfig.blockSizeHorizontal! * 30),
+                ));
             }
           },
-          child: Stack(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height / 2,
-                    width: MediaQuery.of(context).size.width,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height / 2,
-                    width: MediaQuery.of(context).size.width,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ],
-              ),
-              ScreenTypeLayout(
-                // breakpoints: const ScreenBreakpoints(
-                //     tablet: 1024, desktop: 1224, watch: 300),
-                mobile: _buildLoginFormForMobile(context),
-                desktop: _buildLoginFormForDeskTop(context),
-                tablet: _buildLoginFormForDeskTop(context),
-              ),
-            ],
+          child: Form(
+            key: _formKey,
+            child: Stack(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Container(
+                      height: MediaQuery.of(context).size.height / 2,
+                      width: MediaQuery.of(context).size.width,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height / 2,
+                      width: MediaQuery.of(context).size.width,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ],
+                ),
+                ScreenTypeLayout(
+                  // breakpoints: const ScreenBreakpoints(
+                  //     tablet: 1024, desktop: 1224, watch: 300),
+                  mobile: _buildLoginFormForMobile(context),
+                  desktop: _buildLoginFormForDeskTop(context),
+                  tablet: _buildLoginFormForDeskTop(context),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -115,6 +145,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                   TextFormField(
                     controller: _username,
                     keyboardType: TextInputType.emailAddress,
+                    validator: emailValidation,
                     autofocus: false,
                     decoration: InputDecoration(
                       hintText: 'Username',
@@ -140,10 +171,11 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                               const BorderRadius.all(Radius.circular(10.0))),
                     ),
                   ),
-                  const SizedBox(height: 15.0),
+                  const SizedBox(height: 30.0),
                   TextFormField(
                     autofocus: false,
                     controller: _password,
+                    validator: passwordValidation,
                     obscureText: true,
                     decoration: InputDecoration(
                       hintText: 'Password',
@@ -169,30 +201,33 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                               const BorderRadius.all(Radius.circular(10.0))),
                     ),
                   ),
-                  const SizedBox(height: 24.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Checkbox(
-                            value: isChecked,
-                            onChanged: (value) {},
-                          ),
-                          const Text("Remember Me")
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30.0),
+                  const SizedBox(height: 50.0),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: <Widget>[
+                  //     Row(
+                  //       children: <Widget>[
+                  //         Checkbox(
+                  //           value: isChecked,
+                  //           onChanged: (value) {},
+                  //         ),
+                  //         const Text("Remember Me")
+                  //       ],
+                  //     ),
+                  //   ],
+                  // ),
+                  // const SizedBox(height: 30.0),
                   Container(
                     height: 40,
                     width: MediaQuery.of(context).size.width / 2.5,
                     child: ElevatedButton(
                       onPressed: () {
-                        loginBloc.add(LoginButtonPressed(
-                            username: _username.text,
-                            password: _password.text));
+                        if (_formKey.currentState!.validate()) {
+                          loginBloc.add(LoginButtonPressed(
+                              username: _username.text,
+                              password: _password.text));
+                        }
+
                         // Navigator.push(context,
                         //     MaterialPageRoute(builder: (context) {
                         //   return const AdminHomeScreen();
@@ -322,7 +357,9 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return const AdminHomeScreen();
+                      return const AdminHomeScreen(
+                        pageIndex: 0,
+                      );
                     }));
                   },
                   child: const Text('Log In',

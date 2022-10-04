@@ -43,9 +43,25 @@ dependencies:
 
   #api call package
   dio: ^4.0.6
-
+  
+  universal_html: ^2.0.8
 
   responsive_builder: ^0.4.3
+
+  #for navigation 
+  go_router: ^4.5.1
+
+  #Remove # from url
+  url_strategy: ^0.2.0
+
+
+ #File Picker Package
+  file_picker: ^4.5.1
+  image_picker: ^0.8.5+3
+  
+  #File Preview package
+  open_file: ^3.2.1
+  animated_bottom_navigation_bar: ^1.1.0 
 
 dev_dependencies:
   flutter_lints: ^1.0.0

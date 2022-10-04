@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:blood_donation/admin/controller/donor%20details/add%20donor/add_new_donor_bloc.dart';
 import 'package:blood_donation/admin/controller/donor%20details/single%20donor/single_donor_data_bloc.dart';
+import 'package:blood_donation/admin/controller/login%20and%20signup/authentication/authentication_bloc.dart';
 import 'package:blood_donation/admin/data/model/donor_info/donor_data.dart';
 import 'package:blood_donation/admin/screens/home_screen/components/blood%20donor/components/add_new_blood_donor_textfield.dart';
 import 'package:blood_donation/constant/admin/admin_constant.dart';
@@ -8,13 +11,19 @@ import 'package:blood_donation/constant/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:universal_html/html.dart' as html;
 
 class AddNewDonorForm extends StatefulWidget {
-  const AddNewDonorForm(
-      {Key? key, required this.title, required this.purpose, required this.id})
-      : super(key: key);
+  const AddNewDonorForm({
+    Key? key,
+    required this.title,
+    required this.purpose,
+    required this.id,
+  }) : super(key: key);
+
   final String title;
   final String purpose;
   final int id;
@@ -53,9 +62,19 @@ class _AddNewDonorFormState extends State<AddNewDonorForm>
 
   final _formKey = GlobalKey<FormState>();
 
+  String? title;
+  String? purpose;
   @override
   void initState() {
-    if (widget.purpose == "edit") {
+    //_counter = RestorableString(json.encode(widget.navigationData));
+    //  html.window.location.assign();
+    // var navigationData =
+    //     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    // print(navigationData);
+    title = widget.title;
+    purpose = widget.purpose;
+    print(title);
+    if (purpose == "edit") {
       singleDonorDataBloc.add(LoadSingleDonor(widget.id));
     }
 
@@ -102,7 +121,9 @@ class _AddNewDonorFormState extends State<AddNewDonorForm>
             ? null
             : [
                 TextButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<AuthenticationBloc>().add(const LoggedOut());
+                    },
                     icon: const Icon(
                       Icons.logout,
                       color: Colors.white,
@@ -142,10 +163,11 @@ class _AddNewDonorFormState extends State<AddNewDonorForm>
         child: BlocListener<AddNewDonorBloc, AddNewDonorState>(
           listener: (context1, state) {
             if (state is AddNewDonorSuccess) {
-              Navigator.pop(context, "Donor Added Successfully!");
+              GoRouter.of(context).push("/home/${1}");
             }
             if (state is UpdateNewDonorSuccess) {
-              Navigator.pop(context, "Donor Updated Successfully!");
+              print("Updated asdbfjashdbf ");
+              GoRouter.of(context).push("/home/${1}");
             }
             if (state is AddNewDonorFailure) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -204,7 +226,7 @@ class _AddNewDonorFormState extends State<AddNewDonorForm>
                       child: Container(
                         padding: const EdgeInsets.all(20.0),
                         child: Text(
-                          widget.title,
+                          title ?? " ",
                           style: Theme.of(context).textTheme.headlineLarge,
                         ),
                       ),
@@ -585,7 +607,7 @@ class _AddNewDonorFormState extends State<AddNewDonorForm>
                             const SizedBox(
                               height: 20.0,
                             ),
-                            (widget.purpose == "add")
+                            (purpose == "add")
                                 ? Row(
                                     children: [
                                       const Spacer(),
@@ -657,6 +679,7 @@ class _AddNewDonorFormState extends State<AddNewDonorForm>
                                                     .validate()) {
                                                   Map<String, dynamic>
                                                       donorData = {
+                                                    "id": widget.id,
                                                     "name": _userName.text,
                                                     "mobile_no_1":
                                                         _phoneNo.text,

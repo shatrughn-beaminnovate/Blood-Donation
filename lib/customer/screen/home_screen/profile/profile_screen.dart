@@ -21,6 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: const Text('Profile'),
           pinned: true,
           elevation: 4,
+          expandedHeight: 60,
           actions: [
             TextButton.icon(
                 onPressed: () {},
@@ -126,6 +127,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.only(top: 15.0, left: 12.0),
                       child: Text(
                         "Current Address",
+                        style: Theme.of(context).textTheme.headline2,
+                      ),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.blockSizeVertical! * 2,
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Wrap(
+                          spacing: SizeConfig.blockSizeHorizontal! * 3,
+                          runSpacing: 12.0,
+                          children: [
+                            ProfileTextFormField(
+                              width: SizeConfig.blockSizeHorizontal! * 73,
+                              textInputType: TextInputType.name,
+                              obscureText: false,
+                              readOnly: true,
+                              label: "Street",
+                            ),
+                            RequestTextFormField(
+                                width: SizeConfig.blockSizeHorizontal! * 35,
+                                textInputType: TextInputType.name,
+                                label: "State",
+                                obscureText: false,
+                                readOnly: true),
+                            RequestTextFormField(
+                                width: SizeConfig.blockSizeHorizontal! * 35,
+                                textInputType: TextInputType.name,
+                                label: "City",
+                                obscureText: false,
+                                readOnly: true),
+                            RequestTextFormField(
+                                width: SizeConfig.blockSizeHorizontal! * 35,
+                                textInputType: TextInputType.name,
+                                label: "Landmark",
+                                obscureText: false,
+                                readOnly: true),
+                            RequestTextFormField(
+                                width: SizeConfig.blockSizeHorizontal! * 35,
+                                textInputType: TextInputType.name,
+                                label: "Pin Code",
+                                obscureText: false,
+                                readOnly: true)
+                          ]),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.blockSizeVertical! * 2,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: SizeConfig.blockSizeVertical! * 3,
+            ),
+            Center(
+              child: Container(
+                width: SizeConfig.blockSizeHorizontal! * 80,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.outline),
+                    borderRadius: BorderRadius.circular(8.0)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0, left: 12.0),
+                      child: Text(
+                        "Office Address",
                         style: Theme.of(context).textTheme.headline2,
                       ),
                     ),

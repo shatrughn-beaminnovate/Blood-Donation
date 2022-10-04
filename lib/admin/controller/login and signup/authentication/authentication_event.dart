@@ -7,6 +7,10 @@ abstract class AuthenticationEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class AppStarted extends AuthenticationEvent {
+  const AppStarted();
+}
+
 class LoggedIn extends AuthenticationEvent {
   final LoginData loginData;
 
@@ -17,6 +21,11 @@ class LoggedIn extends AuthenticationEvent {
 }
 
 class LoggedOut extends AuthenticationEvent {
+  const LoggedOut();
+
+  @override
+  List<Object> get props => [];
+
   @override
   String toString() => 'LoggedOut';
 }
